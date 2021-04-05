@@ -11,7 +11,7 @@ router.get("/current", (req: express.Request, res: express.Response, next: expre
     // let result = { humidity: hum, temperature: temp };
     // res.json(result);
 
-    cp.exec("/opt/fruitnanny/bin/dht22.py", (err, stdout, stderr) => {
+    cp.exec("/opt/fruitnanny/bin/bme280.py", (err, stdout, stderr) => {
         let values = stdout.trim().split(" ");
         let t = values[0];
         let h = values[1];

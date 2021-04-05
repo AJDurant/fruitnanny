@@ -26,7 +26,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     devices:
       - "/dev/vchiq:/dev/vchiq"
-    command: gst-launch-1.0 -v rpicamsrc name=src preview=0 exposure-mode=night fullscreen=0 bitrate=1000000 annotation-mode=time+date annotation-text-size=20 ! video/x-h264,width=960,height=540,framerate=12/1,profile=constrained-baseline ! queue max-size-bytes=0 max-size-buffers=0 ! h264parse ! rtph264pay config-interval=1 pt=96 ! queue ! udpsink host=127.0.0.1 port=5004  sync=false
+    command: gst-launch-1.0 -v rpicamsrc name=src preview=0 exposure-mode=night fullscreen=0 bitrate=1000000 annotation-mode=time annotation-text-size=20 ! video/x-h264,width=960,height=540,framerate=12/1,profile=constrained-baseline ! queue max-size-bytes=0 max-size-buffers=0 ! h264parse ! rtph264pay config-interval=1 pt=96 ! queue ! udpsink host=127.0.0.1 port=5004  sync=false
 
   gstreamer-audio:
     build: ./gstreamer
@@ -37,8 +37,8 @@ services:
       - janus
     devices:
       - "/dev/snd:/dev/snd"
-        #command: gst-launch-1.0 -v pulsesrc device=microphone ! audioconvert ! audioresample ! opusenc ! rtpopuspay ! queue max-size-bytes=0 max-size-buffers=0 ! udpsink host=127.0.0.1 port=5002
-    command: "/audio_entry.sh"
+    command: gst-launch-1.0 -v alsasrc device=hw:0 ! audio/x-raw,format=S32LE,channels=2 ! volume volume=5.0 ! audioconvert ! audioresample ! opusenc ! rtpopuspay ! queue max-size-bytes=0 max-size-buffers=0 ! udpsink host=127.0.0.1 port=5002
+    #command: gst-launch-1.0 -v audiotestsrc ! audio/x-raw,format=S32LE,channels=2 ! audioconvert ! audioresample ! opusenc ! rtpopuspay ! queue max-size-bytes=0 max-size-buffers=0 ! udpsink host=127.0.0.1 port=5002
 
   fruitnanny:
     build: ./fruitnanny
