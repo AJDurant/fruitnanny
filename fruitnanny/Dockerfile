@@ -7,6 +7,7 @@ RUN echo 'APT::Install-Recommends "false";' >/etc/apt/apt.conf.d/00recommends \
     libgpiod2 \
     python3 \
     python3-pip \
+    python3-setuptools \
     wiringpi \
     && pip3 install --upgrade RPI.GPIO adafruit-blinka adafruit-circuitpython-dht \
     && apt-get --purge -y autoremove && apt-get clean && rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*

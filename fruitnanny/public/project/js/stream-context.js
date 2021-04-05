@@ -21,6 +21,7 @@ var StreamContext = (function() {
     var unmutecallback = null;
 
     var init = function(stream) {
+        if (initialized) return;
         current_stream = stream;
         if (source === null) {
             source = audioContext.createMediaStreamSource(stream);
@@ -32,9 +33,7 @@ var StreamContext = (function() {
         gain.gain.value = 1;
         
         source.connect(analyser);
-        analyser.connect(gain)
-        
-        gain.connect(audioContext.destination);
+        source.connect(gain).connect(audioContext.destination);
         initialized = true;
     }
     
